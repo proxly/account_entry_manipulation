@@ -21,11 +21,11 @@
 
 
 {
-    'name': 'Account - Database Manipulation',
+    'name': 'Account - Entry Manipulation',
     'version': '1.0',
     'category': 'Accounting/Financial Configuration/Backend Access',
     'description': """ 
-This module provides a backend access to data that can not be altered by the account manager.
+This module provides a backend update access with a readable interface that can not be altered by the account manager.
 """,
     'author': 'Roxly Rivero',
     'website': 'http://www.gqwest.com',
