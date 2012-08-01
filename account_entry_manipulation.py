@@ -23,10 +23,14 @@ class entry_alteration(osv.osv):
 	    'journal_id':fields.many2one('account.journal', 'Journal'),
 	    'account_id':fields.many2one('account.account','Account'),
 	    'log_ids':fields.one2many('entry.alteration.log','alter_id','Alteration Logs', readonly=True),
+	    'state':fields.selection([
+								('draft','Draft'),
+								('posted','Posted'),
+								], 'State', )
 		}
 	def apply_alteration(self, cr, uid, ids, context=None):
-		move_line_pool=self.pool.get('account.move.line')
-		alter_log=self.pool.get('entry.alteration.log')
+		#move_line_pool=self.pool.get('account.move.line')
+		#alter_log=self.pool.get('entry.alteration.log')
 		for inv in self.browse(cr, uid, ids, context=None):
 			inv_id = inv.id
 			if inv.account_id:
@@ -36,29 +40,14 @@ class entry_alteration(osv.osv):
 					account_orig=entry_id.account_id.id
 					entry_name = entry_id.name
 					entry_name = "'"+entry_name+"'"
-					query=("""update account_move_line set account_id=%s where id=%s"""% (entry_uid, account_id))
+					query=("""update account_move_line set account_id=%s where id=%s"""% (account_id,entry_uid))
 					cr.execute(query)
 					query=("""insert into entry_alteration_log(account_from, account_to, entry_id, name, alter_id) values(%s,%s,%s,%s,%s)"""% (account_orig, account_id,entry_uid,entry_name, inv_id))
 					cr.execute(query)
 				continue
 			if inv.journal_id:
 				continue
-#	    
-#	    for inv in self.browse(cr, uid, ids,context=None):
-#			inv_id = inv.id
-#			if inv.account_id:
-#				account_id=inv.account_id.id
-##					account_orig=entry_id.account_id.id
-	#                move_line_pool.update(cr, uid,{'account_id':account_id})
-	 #           continue
-	           
-	  #      if inv.journal_id:
-	   #     	journal_id=inv.journal_id.id
-	    #    	for entry_id in inv.entry_ids:
-	     #   		journal_orig=entry_id.journal_id.id
-	      #          entry_id=entry_id.id
-	       #         move_line_pool.update(cr, uid,{'journal_id':journal_id})
-	        #    continue
+		return True
 entry_alteration()
 
 class entry_alteration_log(osv.osv):

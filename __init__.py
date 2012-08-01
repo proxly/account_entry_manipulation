@@ -1,1 +1,1 @@
-import account_dbman
+import account_entry_manipulation

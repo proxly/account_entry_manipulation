@@ -34,7 +34,7 @@ This module provides a backend update access with a readable interface that can 
     ],
     'init_xml': [],
     'update_xml': [
-        'account_dbman_view.xml'
+        'account_entry_manipulation_view.xml'
     ],
     'demo_xml': [
     ],
